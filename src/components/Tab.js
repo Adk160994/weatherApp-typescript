@@ -56,7 +56,6 @@ export default function CustomizedExpansionPanels(prop) {
     };
 
     const result = prop.data;
-    //console.log(result);
 
     let content = [];
     let i = 0;

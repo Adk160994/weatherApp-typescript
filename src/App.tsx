@@ -1,11 +1,15 @@
-import React, {Component, useState} from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios'
 import NavBar from "./components/NavBar";
 import Tab from "./components/Tab";
+import SelectCity from "./components/SelectCity";
 import {Container} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
+
+// var e = document.getElementById('select_city');
+// console.log(e.options[e.selectedIndex].value)
+
 
 class app extends Component{
     componentDidMount(): void {
@@ -14,7 +18,7 @@ class app extends Component{
                 let result = response.data.list
                 let new_result = result.map(function (item: any) {
                     var main = item.main
-                    var weather = item.main
+                    var weather = item.weather
                     var myDate = new Date(item.dt * 1000)
                     var data = myDate.toISOString()
                     var date = {
@@ -25,7 +29,6 @@ class app extends Component{
                     }
                     return date
                 })
-                console.log(new_result)
                 const groups = new_result.reduce((groups: any, dayWeather: any) => {
                     const date = dayWeather.data.split('T')[0];
                     if (!groups[date]) {
@@ -42,10 +45,11 @@ class app extends Component{
                 });
                 this.setState({
                     days : groupArrays,
+                    name : '',
                     loading:false
                 })
-                console.log(this.state);
-            }) .catch(error =>{
+                console.log(this.state)
+            }).catch(error =>{
             console.log('Error fetching and parsing data',error)
         })
     }
@@ -56,33 +60,12 @@ class app extends Component{
                 <CssBaseline />
                 <Container maxWidth="sm">
                     {/*<CityCard data={this.state} key={'city'}/>*/}
+                    <SelectCity />
                     <Tab data={this.state} key ={'tabs'}/>
                 </Container>
             </React.Fragment>
         );
     }
 }
-
-// const App: React.FC = () => {
-//
-//     return (
-//         <div className="App">
-//             <header className="App-header">
-//                 <img src={logo} className="App-logo" alt="logo"/>
-//                 <p>
-//                     Edit <code>src/App.tsx</code> and save to reload.
-//                 </p>
-//                 <a
-//                     className="App-link"
-//                     href="https://reactjs.org"
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                 >
-//                     Learn React
-//                 </a>
-//             </header>
-//         </div>
-//     );
-// }
 
 export default app;

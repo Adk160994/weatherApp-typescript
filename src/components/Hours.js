@@ -1,22 +1,16 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import thunderstorm from '../images/Thunderstorm.png'
+import drizzle from '../images/Drizzle.png'
+import rain from '../images/Rain.png'
+import snow from '../images/Snow.png'
+import atmosphere from '../images/Atmosphere.png'
+import clear from '../images/Clear.png'
+import clouds from '../images/Cloudy.png'
+import extreme from '../images/Extreme.png'
+import defaultIcon from '../images/Partly-cloudy.png'
 import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
-
 export default function SimpleTable(prop) {
-    const classes = useStyles();
     let hours = prop.data
     let content = []
     if (hours === null) {
@@ -24,16 +18,46 @@ export default function SimpleTable(prop) {
         content = []
     } else {
         for (var index in hours){
+            var weather = hours[index].weather[0].main
+            let weatherIcon
+            switch(weather) {
+                case 'Thunderstorm':
+                    weatherIcon = thunderstorm
+                    break
+                case 'Drizzle':
+                    weatherIcon = drizzle
+                    break
+                case 'Rain':
+                    weatherIcon = rain
+                    break
+                case 'Snow':
+                    weatherIcon = snow
+                    break
+                case 'Atmosphere':
+                    weatherIcon = atmosphere
+                    break
+                case 'Clear':
+                    weatherIcon = clear
+                    break
+                case 'Clouds':
+                    weatherIcon = clouds
+                    break
+                case 'Extreme':
+                    weatherIcon = extreme
+                    break
+                default:
+                    weatherIcon = defaultIcon
+            }
             content.push(
-                <Grid container>
+                <Grid container key={index}>
                     <Grid item xs={4}>
                         <p>{hours[index].data.slice(11,16)}</p>
                     </Grid>
                     <Grid item xs={4}>
-                        <p>{hours[index].main.temp_min+"° /"+ hours[index].main.temp_max+"°"}</p>
+                        <img src={`${weatherIcon}`} alt="WeatherIcon" height="40" width="40" />
                     </Grid>
                     <Grid item xs={4}>
-                        <p>{hours[index].main.feels_like+"°"}</p>
+                        <p>{hours[index].main.temp_min+"° / "+ hours[index].main.temp_max+"°"}</p>
                     </Grid>
                 </Grid>
             )
@@ -46,10 +70,10 @@ export default function SimpleTable(prop) {
                 <p><b>Hour</b></p>
             </Grid>
             <Grid item xs={4}>
-                <p><b>Temperature</b></p>
+
             </Grid>
             <Grid item xs={4}>
-                <p><b>Feels Like</b></p>
+                <p><b>Temperature</b></p>
             </Grid>
             {content}
         </Grid>
