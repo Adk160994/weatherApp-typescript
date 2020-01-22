@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import './App.css';
 import axios from 'axios'
 import NavBar from "./components/NavBar";
@@ -10,10 +10,28 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 // var e = document.getElementById('select_city');
 // console.log(e.options[e.selectedIndex].value)
 
-
 class app extends Component{
+
+    state = {
+        cityName: ""
+    }
+
+
+    handleClick(city:any) {
+        //console.log(city)
+        this.setState({cityName: city});
+    }
     componentDidMount(): void {
-        axios.get('http://api.openweathermap.org/data/2.5/forecast?q=Bucharest,ro&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9')
+        let city
+        if (this.state.cityName !== ''){
+            city = this.state.cityName;
+        } else {
+            city = 'Bucharest';
+        }
+        console.log(this.state);
+        let apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q='+city+"&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
+        console.log("Apiurl"+apiUrl)
+        axios.get(apiUrl)
             .then((response) => {
                 let result = response.data.list
                 let new_result = result.map(function (item: any) {
@@ -45,7 +63,6 @@ class app extends Component{
                 });
                 this.setState({
                     days : groupArrays,
-                    name : '',
                     loading:false
                 })
                 console.log(this.state)
@@ -53,6 +70,7 @@ class app extends Component{
             console.log('Error fetching and parsing data',error)
         })
     }
+
     render() {
         return (
             <React.Fragment>
@@ -60,7 +78,7 @@ class app extends Component{
                 <CssBaseline />
                 <Container maxWidth="sm">
                     {/*<CityCard data={this.state} key={'city'}/>*/}
-                    <SelectCity />
+                    <SelectCity data = {this.state} key ={'selectcity'}/>
                     <Tab data={this.state} key ={'tabs'}/>
                 </Container>
             </React.Fragment>

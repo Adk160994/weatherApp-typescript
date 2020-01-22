@@ -1,63 +1,31 @@
-import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import Select from 'react-select';
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-        marginTop: 8,
-        marginBottom: 8,
-        width: "100%",
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
-
-const cities = [
-    {
-        country: "Romania",
-        city: "Bucharest"
-    },
-    {
-        country: "England",
-        city: "London"
-    },
-    {
-        country: "Russian Federation",
-        city: "Moscow"
-    }
+const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
 ];
 
-function SelectCity() {
-    //initial value set to react
-    const [city,setCity] = useState('');
-
-    function handleChange(e){
-        setCity(e.target.value);
-        e.name = e.target.value
+class SelectCity extends React.Component {
+    state = {
+        selectedOption: null,
     };
 
-    function handleSubmit(e){
-        e.preventDefault();
-        console.log(city);
+    handleChange = selectedOption => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
     };
+    render() {
+        const { selectedOption } = this.state;
 
-    let content = []
-    for(var index in cities){
-        content.push(
-            <option value={cities[index].city}>{cities[index].city}</option>
-        )
+        return (
+            <Select
+                value={selectedOption}
+                onChange={this.handleChange}
+                options={options}
+            />
+        );
     }
-    return (
-        <form onSubmit={handleSubmit}>
-            <h2>Choose a city</h2>
-            <select onChange={handleChange} value={city} id="select_city">
-                <option></option>
-                {content}
-            </select>
-            <button type="submit">Submit</button>
-        </form>
-
-    );
 }
 export default SelectCity
