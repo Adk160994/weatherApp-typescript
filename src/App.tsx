@@ -1,36 +1,27 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import './App.css';
-import axios from 'axios'
+import axios from 'axios';
 import NavBar from "./components/NavBar";
 import Tab from "./components/Tab";
 import SelectCity from "./components/SelectCity";
 import {Container} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-// var e = document.getElementById('select_city');
-// console.log(e.options[e.selectedIndex].value)
+class app extends Component {
+    const [cityName, setCityName] = useState("");
+    const [days, setDays] = useState([]);
 
-
-class app extends Component{
-    state = {
-        cityName: ""
-    }
-
-    handleChange(city:string){
-        console.log(city)
-        // this.setState({
-        //     cityName: city
-        // });
+    const handleChange = (city:string) => {
+        console.log(city);
+        if('name' in city) {
+            setCityName(city.name);
+        }
     };
 
-
-    constructor(prop:any) {
-        super(prop);
-
-        console.log(this.state.cityName);
-
-        let apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Bucharest&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
+    useEffect(() = {
+        let apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
         console.log("Apiurl"+apiUrl)
+
         axios.get(apiUrl)
             .then((response) => {
                 let result = response.data.list
@@ -61,15 +52,15 @@ class app extends Component{
                         dayWeather: groups[date]
                     };
                 });
-                this.setState({
-                    days : groupArrays,
-                    loading:false
-                })
+                setDays(groupArrays);
                 console.log(this.state)
             }).catch(error =>{
-            console.log('Error fetching and parsing data',error)
-        })
+                console.log('Error fetching and parsing data',error)
+            });
+    });
 
+    constructor(prop:any) {
+        super(prop);
     }
 
     render() {
@@ -79,9 +70,8 @@ class app extends Component{
                 <NavBar />
                 <CssBaseline />
                 <Container maxWidth="sm">
-
                     <SelectCity onChange={this.handleChange} key ={'selectcity'}/>
-                    {/*<Tab data={this.state} key ={'tabs'}/>*/}
+                    <Tab data={days} key={'tabs'}/>
                 </Container>
             </React.Fragment>
         );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 require('react-dom');
 
@@ -36,6 +36,9 @@ function SelectCity(props) {
     // console.log(props.data)
     // const cityProp = props;
     // console.log(cityProp)
+    useEffect(() => {
+        props.onChange(city);
+    });
     let content = []
     for(var index in cities){
         content.push(
@@ -45,7 +48,7 @@ function SelectCity(props) {
     return (
         <form>
             <h2>Choose a city</h2>
-            <select onChange={setCity(city)} id="select_city">
+            <select onChange={() => setCity(city)} id="select_city">
                 <option></option>
                 {content}
             </select>
