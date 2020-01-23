@@ -10,26 +10,26 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 // var e = document.getElementById('select_city');
 // console.log(e.options[e.selectedIndex].value)
 
-class app extends Component{
 
+class app extends Component{
     state = {
         cityName: ""
     }
 
+    handleChange(city:string){
+        console.log(city)
+        // this.setState({
+        //     cityName: city
+        // });
+    };
 
-    handleClick(city:any) {
-        //console.log(city)
-        this.setState({cityName: city});
-    }
-    componentDidMount(): void {
-        let city
-        if (this.state.cityName !== ''){
-            city = this.state.cityName;
-        } else {
-            city = 'Bucharest';
-        }
-        console.log(this.state);
-        let apiUrl = 'http://api.openweathermap.org/data/2.5/forecast?q='+city+"&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
+
+    constructor(prop:any) {
+        super(prop);
+
+        console.log(this.state.cityName);
+
+        let apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Bucharest&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
         console.log("Apiurl"+apiUrl)
         axios.get(apiUrl)
             .then((response) => {
@@ -69,17 +69,19 @@ class app extends Component{
             }).catch(error =>{
             console.log('Error fetching and parsing data',error)
         })
+
     }
 
     render() {
+
         return (
             <React.Fragment>
                 <NavBar />
                 <CssBaseline />
                 <Container maxWidth="sm">
-                    {/*<CityCard data={this.state} key={'city'}/>*/}
-                    <SelectCity data = {this.state} key ={'selectcity'}/>
-                    <Tab data={this.state} key ={'tabs'}/>
+
+                    <SelectCity onChange={this.handleChange} key ={'selectcity'}/>
+                    {/*<Tab data={this.state} key ={'tabs'}/>*/}
                 </Container>
             </React.Fragment>
         );
