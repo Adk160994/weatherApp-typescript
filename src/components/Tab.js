@@ -56,6 +56,9 @@ export default function CustomizedExpansionPanels(prop) {
     };
 
     const result = prop.data;
+    console.log("tab");
+    console.log(result);
+    console.log("tab");
 
     let content = [];
     let i = 0;
@@ -63,15 +66,15 @@ export default function CustomizedExpansionPanels(prop) {
         console.log("no data found");
         content = []
     } else {
-        for (var index in result.days) {
+        for (var index in result) {
             i = i+1
             content.push(
                 <ExpansionPanel key={i} square expanded={expanded === 'panel'+i} onChange={handleChange('panel'+ i)}>
                 <ExpansionPanelSummary aria-controls="panel{i}d-content" id="panel{i}-header">
-                        <Typography>{result.days[index].dayWeather[0].data_txt.toDateString().slice(0, 10)}</Typography>
+                        <Typography>{result[index].dayWeather[0].data_txt.toDateString().slice(0, 10)}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Hours key={i} data = {result.days[index].dayWeather} />
+                    <Hours key={i} data = {result[index].dayWeather} />
                 </ExpansionPanelDetails>
                 </ExpansionPanel>
             )

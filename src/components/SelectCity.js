@@ -32,23 +32,17 @@ const cities = [
 
 
 function SelectCity(props) {
-    const [city, setCity] =  React.useState("");
-    // console.log(props.data)
-    // const cityProp = props;
-    // console.log(cityProp)
-    useEffect(() => {
-        props.onChange(city);
-    });
-    let content = []
+    const content = [];
     for(var index in cities){
         content.push(
             <option value={cities[index].city} key={index}>{cities[index].city}</option>
-    )
+        )
     }
+
     return (
         <form>
             <h2>Choose a city</h2>
-            <select onChange={() => setCity(city)} id="select_city">
+            <select onChange={(event) => props.onChange(event.target.value)} id="select_city">
                 <option></option>
                 {content}
             </select>

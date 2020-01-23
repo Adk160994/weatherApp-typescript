@@ -7,18 +7,22 @@ import SelectCity from "./components/SelectCity";
 import {Container} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-class app extends Component {
+const App: React.FC = () => {
     const [cityName, setCityName] = useState("");
-    const [days, setDays] = useState([]);
+    const [days, setDays] = useState<{ date: string; dayWeather: any; }[]>([]);
+    const [weather, setWeather] = useState();
 
-    const handleChange = (city:string) => {
+    const handleChange = (city:any) => {
         console.log(city);
-        if('name' in city) {
-            setCityName(city.name);
+        if(city !== cityName) {
+            setCityName(city);
         }
     };
 
-    useEffect(() = {
+    useEffect(() => {
+        if(cityName == '') return;
+        if(weather && cityName in weather) return;
+
         let apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
         console.log("Apiurl"+apiUrl)
 
@@ -52,30 +56,31 @@ class app extends Component {
                         dayWeather: groups[date]
                     };
                 });
-                setDays(groupArrays);
-                console.log(this.state)
+                //setDays(groupArrays);
+                const newWeather = weather ? weather : {};
+                newWeather[cityName] = groupArrays;
+                setWeather(newWeather);
+                console.log(weather);
             }).catch(error =>{
                 console.log('Error fetching and parsing data',error)
             });
     });
 
-    constructor(prop:any) {
-        super(prop);
-    }
+    const data = weather && cityName in weather ? weather[cityName] : [];
+    console.log("==============+");
+    console.log(data);
+    console.log("==============+");
 
-    render() {
-
-        return (
-            <React.Fragment>
-                <NavBar />
-                <CssBaseline />
-                <Container maxWidth="sm">
-                    <SelectCity onChange={this.handleChange} key ={'selectcity'}/>
-                    <Tab data={days} key={'tabs'}/>
-                </Container>
-            </React.Fragment>
-        );
-    }
+    return (
+        <React.Fragment>
+            <NavBar />
+            <CssBaseline />
+            <Container maxWidth="sm">
+                <SelectCity onChange={handleChange} key ={'selectcity'}/>
+                <Tab data={data} key={'tabs'}/>
+            </Container>
+        </React.Fragment>
+    );
 }
 
-export default app;
+export default App;
