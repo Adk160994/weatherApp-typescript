@@ -9,7 +9,11 @@ import Hours from "./Hours";
 
 const ExpansionPanel = withStyles({
     root: {
+
+        color:'white',
+        background: 'linear-gradient(45deg, #2C3E50 30%, #FD746C 90%)',
         border: '1px solid rgba(0, 0, 0, .125)',
+
         boxShadow: 'none',
         '&:not(:last-child)': {
             borderBottom: 0,
@@ -21,7 +25,12 @@ const ExpansionPanel = withStyles({
             margin: 'auto',
         },
     },
-    expanded: {},
+    expanded: {
+        text: {
+            // Some CSS
+            color: 'white',
+        },
+    },
 })(MuiExpansionPanel);
 
 const ExpansionPanelSummary = withStyles({
@@ -37,6 +46,7 @@ const ExpansionPanelSummary = withStyles({
     content: {
         '&$expanded': {
             margin: '12px 0',
+            color: 'white',
         },
     },
     expanded: {},
@@ -45,20 +55,18 @@ const ExpansionPanelSummary = withStyles({
 const ExpansionPanelDetails = withStyles(theme => ({
     root: {
         padding: theme.spacing(2),
+        color: 'white',
     },
 }))(MuiExpansionPanelDetails);
 
 export default function Tab(prop:any) {
-    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
     const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
     const result = prop.data;
-    console.log("tab");
-    console.log(result);
-    console.log("tab");
 
     let content = [];
     let i = 0;

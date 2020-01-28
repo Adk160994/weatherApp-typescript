@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,14 +9,15 @@ require('react-dom');
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-        //margin: theme.spacing(1),
         minWidth: 120,
         width: "100%",
         marginLeft: 0,
         marginRight: 0,
         marginTop: 20,
+        borderColor: 'white',
 
     },
+
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
