@@ -1,34 +1,34 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import './App.css';
-import axios from 'axios';
 import NavBar from "./components/NavBar";
 import Tab from "./components/Tab";
 import SelectCity from "./components/SelectCity";
 import {Container} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-const App: React.FC = () => {
-    const [cityName, setCityName] = useState("");
-    const [days, setDays] = useState<{ date: string; dayWeather: any; }[]>([]);
-    const [weather, setWeather] = useState();
+function updateApiUrl(city: any) {
+    return "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9";
+}
 
-    const handleChange = (city:any) => {
-        console.log(city);
-        if(city !== cityName) {
+const App = () => {
+
+    const handleChange = (city: any) => {
+        if (city !== cityName) {
             setCityName(city);
         }
     };
+    const [cityName, setCityName] = useState("");
+    const [weather, setWeather] = useState();
 
-    useEffect(() => {
-        if(cityName == '') return;
-        if(weather && cityName in weather) return;
-
-        let apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&APPID=04732e001ee43c2618c3a93eb62a70f9"
-        console.log("Apiurl"+apiUrl)
-
-        axios.get(apiUrl)
-            .then((response) => {
-                let result = response.data.list
+    useLayoutEffect(() => {
+        if (cityName === '') return;
+        if (weather && cityName in weather) return;
+        let apiUrl = updateApiUrl(cityName)
+        fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                //console.log(data.city)
+                let result = data.list;
                 let new_result = result.map(function (item: any) {
                     var main = item.main
                     var weather = item.weather
@@ -56,15 +56,14 @@ const App: React.FC = () => {
                         dayWeather: groups[date]
                     };
                 });
-                //setDays(groupArrays);
                 const newWeather = weather ? weather : {};
                 newWeather[cityName] = groupArrays;
                 setWeather(newWeather);
-                console.log(weather);
-            }).catch(error =>{
-                console.log('Error fetching and parsing data',error)
+                console.log("Weather");
+                console.log(newWeather);
             });
     });
+
 
     const data = weather && cityName in weather ? weather[cityName] : [];
     console.log("==============+");
@@ -73,14 +72,14 @@ const App: React.FC = () => {
 
     return (
         <React.Fragment>
-            <NavBar />
-            <CssBaseline />
+            <NavBar/>
+            <CssBaseline/>
             <Container maxWidth="sm">
-                <SelectCity onChange={handleChange} key ={'selectcity'}/>
+                <SelectCity onChange={handleChange} key={'selectcity'}/>
                 <Tab data={data} key={'tabs'}/>
             </Container>
         </React.Fragment>
     );
-}
+};
 
 export default App;

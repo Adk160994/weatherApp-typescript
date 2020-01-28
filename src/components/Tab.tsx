@@ -48,11 +48,11 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
-export default function CustomizedExpansionPanels(prop) {
-    const [expanded, setExpanded] = React.useState('panel1');
+export default function Tab(prop:any) {
+    const [expanded, setExpanded] = React.useState<string | false>(false);
 
-    const handleChange = panel => (event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
+    const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
     };
 
     const result = prop.data;
@@ -62,20 +62,20 @@ export default function CustomizedExpansionPanels(prop) {
 
     let content = [];
     let i = 0;
-    if (result === null) {
+    if (result.length === 0) {
         console.log("no data found");
         content = []
     } else {
         for (var index in result) {
-            i = i+1
+            i = i+1;
             content.push(
                 <ExpansionPanel key={i} square expanded={expanded === 'panel'+i} onChange={handleChange('panel'+ i)}>
-                <ExpansionPanelSummary aria-controls="panel{i}d-content" id="panel{i}-header">
+                    <ExpansionPanelSummary aria-controls="panel{i}d-content" id="panel{i}-header">
                         <Typography>{result[index].dayWeather[0].data_txt.toDateString().slice(0, 10)}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Hours key={i} data = {result[index].dayWeather} />
-                </ExpansionPanelDetails>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Hours key={i} data = {result[index].dayWeather} />
+                    </ExpansionPanelDetails>
                 </ExpansionPanel>
             )
         }

@@ -10,54 +10,54 @@ import extreme from '../images/Extreme.png'
 import defaultIcon from '../images/Partly-cloudy.png'
 import Grid from "@material-ui/core/Grid";
 
-export default function SimpleTable(prop) {
-    let hours = prop.data
-    let content = []
+export default function SimpleTable(prop: any) {
+    let hours = prop.data;
+    let content = [];
     if (hours === null) {
         console.log("no data found");
         content = []
     } else {
-        for (var index in hours){
-            var weather = hours[index].weather[0].main
-            let weatherIcon
-            switch(weather) {
+        for (var index in hours) {
+            var weather = hours[index].weather[0].main;
+            let weatherIcon;
+            switch (weather) {
                 case 'Thunderstorm':
-                    weatherIcon = thunderstorm
-                    break
+                    weatherIcon = thunderstorm;
+                    break;
                 case 'Drizzle':
-                    weatherIcon = drizzle
-                    break
+                    weatherIcon = drizzle;
+                    break;
                 case 'Rain':
-                    weatherIcon = rain
-                    break
+                    weatherIcon = rain;
+                    break;
                 case 'Snow':
-                    weatherIcon = snow
-                    break
+                    weatherIcon = snow;
+                    break;
                 case 'Atmosphere':
-                    weatherIcon = atmosphere
-                    break
+                    weatherIcon = atmosphere;
+                    break;
                 case 'Clear':
-                    weatherIcon = clear
-                    break
+                    weatherIcon = clear;
+                    break;
                 case 'Clouds':
-                    weatherIcon = clouds
-                    break
+                    weatherIcon = clouds;
+                    break;
                 case 'Extreme':
-                    weatherIcon = extreme
-                    break
+                    weatherIcon = extreme;
+                    break;
                 default:
                     weatherIcon = defaultIcon
             }
             content.push(
                 <Grid container key={index}>
                     <Grid item xs={4}>
-                        <p>{hours[index].data.slice(11,16)}</p>
+                        <p>{hours[index].data.slice(11, 16)}</p>
                     </Grid>
                     <Grid item xs={4}>
-                        <img src={`${weatherIcon}`} alt="WeatherIcon" height="40" width="40" />
+                        <img src={`${weatherIcon}`} alt="WeatherIcon" height="40" width="40"/>
                     </Grid>
                     <Grid item xs={4}>
-                        <p>{hours[index].main.temp_min+"° / "+ hours[index].main.temp_max+"°"}</p>
+                        <p>{hours[index].main.temp_min + "° / " + hours[index].main.temp_max + "°"}</p>
                     </Grid>
                 </Grid>
             )
