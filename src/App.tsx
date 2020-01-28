@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import NavBar from "./components/NavBar";
 import Tab from "./components/Tab";
@@ -11,23 +11,29 @@ function updateApiUrl(city: any) {
 }
 
 const App = () => {
-
-    const handleChange = (city: any) => {
-        if (city !== cityName) {
-            setCityName(city);
-        }
-    };
     const [cityName, setCityName] = useState("");
     const [weather, setWeather] = useState();
 
-    useLayoutEffect(() => {
-        if (cityName === '') return;
-        if (weather && cityName in weather) return;
-        let apiUrl = updateApiUrl(cityName)
-        fetch(apiUrl)
+    const handleChange = (newCity: any) => {
+        if (newCity !== cityName) {
+            if(newCity === '') {
+                setCityName(newCity);
+            } else {
+                getWeather(newCity)
+                    .then((cityWeather) => {
+                        const newWeather = weather ? weather : {};
+                        newWeather[newCity] = cityWeather;
+                        setCityName(newCity);
+                        setWeather(newWeather);
+                    });
+            }
+        }
+    };
+
+    const getWeather = (cityName: string) => {
+        return fetch(updateApiUrl(cityName))
             .then((response) => response.json())
             .then((data) => {
-                //console.log(data.city)
                 let result = data.list;
                 let new_result = result.map(function (item: any) {
                     var main = item.main
@@ -40,7 +46,7 @@ const App = () => {
                         main: main,
                         weather: weather,
                     }
-                    return date
+                    return date;
                 })
                 const groups = new_result.reduce((groups: any, dayWeather: any) => {
                     const date = dayWeather.data.split('T')[0];
@@ -56,14 +62,10 @@ const App = () => {
                         dayWeather: groups[date]
                     };
                 });
-                const newWeather = weather ? weather : {};
-                newWeather[cityName] = groupArrays;
-                setWeather(newWeather);
-                console.log("Weather");
-                console.log(newWeather);
+                return groupArrays;
             });
-    });
 
+    }
 
     const data = weather && cityName in weather ? weather[cityName] : [];
     console.log("==============+");
