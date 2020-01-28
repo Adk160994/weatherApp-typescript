@@ -61,8 +61,9 @@ function SelectCity(props: any) {
             </InputLabel>
             <Select
                 labelId="demo-simple-select-outlined-label"
-                onChange={(event) => props.onChange(event.target.value)} id="select_city"
+                onChange={(event) => props.onChange(event.target.value)}
                 value={props.value}
+                defaultValue=""
                 labelWidth={labelWidth}
             >
                 <MenuItem value="">

@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from "./components/NavBar";
 import Tab from "./components/Tab";
 import SelectCity from "./components/SelectCity";
-import {Container, Typography} from "@material-ui/core";
+import {Container} from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import GetWeather from "./components/getData";
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
